@@ -42,7 +42,7 @@ class Dbc extends Parser {
       busConfiguration: null,
       canNodes: new Array(),
       valueTables: null,
-      attributes: null,
+      attributes: new Map(),
     };
   }
 
@@ -277,7 +277,7 @@ class Dbc extends Parser {
       busConfiguration: null,
       canNodes: new Array(),
       valueTables: new Map(),
-      attributes: null,
+      attributes: new Map(),
     };
     for await (const line of rl) {
       lineInfo = this.parseLine(line);
@@ -309,7 +309,7 @@ class Dbc extends Parser {
       busConfiguration: null,
       canNodes: new Array(),
       valueTables: new Map(),
-      attributes: null,
+      attributes: new Map(),
     };
 
     lines.forEach((line) => {

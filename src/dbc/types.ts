@@ -45,7 +45,7 @@ export type DbcData = {
   busConfiguration: number | null;
   canNodes: string[];
   valueTables: Map<string, ValueTable> | null;
-  attributes: Attributes | null;
+  attributes: Attributes;
 };
 
 export type ValueTable = Map<number, string>;
@@ -95,18 +95,18 @@ export type CanFrame = {
   payload: Uint8Array;
 };
 
-export type Attributes = {
-  file: Attribute[] | null;
-  signals: Attribute[] | null;
-  messages: Attribute[] | null;
-  nodes: Attribute[] | null;
-};
+export type Attributes = Map<string, Attribute>;
+
+export type AttributeType = 'Message' | 'Signal' | 'Node' | 'Global';
 
 export type Attribute = {
   name: string;
+  type: AttributeType;
   dataType: string;
-  value: string;
-  options: string[];
+  min: number | null;
+  max: number | null;
+  enumeration: string[] | null;
+  value: number | string | null;
 };
 
 export interface Config {

@@ -11,6 +11,8 @@ import {
   DbcData,
   DefinitionRegex,
   ValueTable,
+  Attribute,
+  AttributeType,
 } from './types';
 import tokens from './tokens';
 
@@ -127,12 +129,62 @@ class Parser {
             this.assignToSigValTable(msg, groups.name, definition);
           }
           break;
-
+        case 'BA_DEF_':
+          const attr = this.generateAttribute(groups.name, groups.type, groups.dataType, groups.config);
+          data.attributes.set(groups.name, attr);
+          break;
         default:
           break;
       }
     }
     return data;
+  }
+
+  protected createAttributeType(type: string): AttributeType {
+    switch (type) {
+      case 'BO_':
+        return 'Message';
+      case 'BU_':
+        return 'Node';
+      case 'SG_':
+        return 'Signal';
+      default:
+        return 'Global';
+    }
+  }
+
+  protected generateAttribute(name: string, type: string, dataType: string, config: string): Attribute {
+    const attrType = this.createAttributeType(type);
+    const attribute: Attribute = {
+      name,
+      type: attrType,
+      dataType,
+      value: null,
+      min: null,
+      max: null,
+      enumeration: null,
+    };
+
+    // Skip over type STRING since it doesn't have data
+    if (!config) return attribute;
+
+    const minMaxMatches = config.match(/(?<min>.*) (?<max>.*)/);
+    const minMaxGroups = minMaxMatches?.groups;
+
+    const enumMatches = config.match(/[a-zA-Z0-9]+/g);
+
+    switch (dataType) {
+      case 'INT':
+        attribute.min = minMaxGroups ? parseInt(minMaxGroups.min, 10) : null;
+        attribute.max = minMaxGroups ? parseInt(minMaxGroups.max, 10) : null;
+        break;
+      case 'FLOAT':
+        attribute.min = minMaxGroups ? parseFloat(minMaxGroups.min) : null;
+        attribute.max = minMaxGroups ? parseFloat(minMaxGroups.max) : null;
+      case 'ENUM':
+        attribute.enumeration = enumMatches ? enumMatches : null;
+    }
+    return attribute;
   }
 
   protected assignToSigValTable(msg: Message, signalName: string, value: ValueTable) {

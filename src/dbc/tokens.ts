@@ -68,6 +68,10 @@ const tokens = {
     name: 'messageComment',
     dataFormat: /CM_ BO_ (?<id>.*) "(?<comment>.*)"/,
   },
+  BA_DEF_: {
+    name: 'attributeDefinition',
+    dataFormat: /BA_DEF_ (?<type>BO_|BU_|SG_)?\s?"(?<name>.*)"\s?(?<dataType>INT|STRING|ENUM|FLOAT)\s?(?<config>.*)?;/,
+  },
 };
 
 export default tokens;
