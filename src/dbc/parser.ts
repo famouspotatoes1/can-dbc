@@ -70,6 +70,7 @@ class Parser {
 
       let msg: Message | undefined;
       let groups;
+      let attr: Attribute | undefined;
       try {
         groups = lineInfo.regexMatch[0].groups;
       } catch (error) {
@@ -130,9 +131,23 @@ class Parser {
           }
           break;
         case 'BA_DEF_':
-          const attr = this.generateAttribute(groups.name, groups.type, groups.dataType, groups.config);
+          attr = this.generateAttribute(groups.name, groups.type, groups.dataType, groups.config);
           data.attributes.set(groups.name, attr);
           break;
+        case 'BA_DEF_DEF_':
+          if (groups.name) {
+            attr = data.attributes.get(groups.name);
+            if (attr) {
+              if (groups.data) {
+                // Remove double quotes around returned data, i.e. '"String"' should be 'String'
+                attr.value = groups.data.replace(/\"/g, '');
+              } else {
+                attr.value = '';
+              }
+              data.attributes.set(groups.name, attr);
+            }
+          }
+
         default:
           break;
       }

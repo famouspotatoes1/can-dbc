@@ -70,7 +70,12 @@ const tokens = {
   },
   BA_DEF_: {
     name: 'attributeDefinition',
-    dataFormat: /BA_DEF_ (?<type>BO_|BU_|SG_)?\s?"(?<name>.*)"\s?(?<dataType>INT|STRING|ENUM|FLOAT)\s?(?<config>.*)?;/,
+    dataFormat:
+      /BA_DEF_ (?<type>BO_|BU_|SG_)?\s?\s?"(?<name>.*)"\s?(?<dataType>INT|STRING|ENUM|FLOAT)\s?(?<config>.*)?;/,
+  },
+  BA_DEF_DEF_: {
+    name: 'attributeDefinitionDefaultValue',
+    dataFormat: /BA_DEF_DEF_.*"(?<name>.*)" (?<data>".*"|.*);/,
   },
 };
 
