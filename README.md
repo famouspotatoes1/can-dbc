@@ -14,7 +14,7 @@
 ## **Motivation**
 <br/>
 
-### <i><b>What is a DBC file?</b><i>
+### <i><b>What is a DBC file?</b></i>
 <br/>
 The DBC file is an ASCII based translation file used to apply identifying names, scaling, offsets, and defining information, to data transmitted within a CAN frame. 
 <br/>
